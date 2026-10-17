@@ -17,6 +17,7 @@ import sys
 import urllib.request
 from datetime import datetime, timezone
 from email.message import EmailMessage
+from email.utils import formatdate, make_msgid
 from html import unescape
 from pathlib import Path
 
@@ -83,6 +84,8 @@ def send_mail(subject: str, body: str) -> None:
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = to
+    msg["Date"] = formatdate(localtime=True)
+    msg["Message-ID"] = make_msgid(domain=sender.split("@")[-1])
     msg.set_content(body)
 
     ctx = ssl.create_default_context()
